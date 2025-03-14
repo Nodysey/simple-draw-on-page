@@ -22,11 +22,12 @@
     display: flex;
     flex-direction: row;
     justify-content: left;
+    align-items: center;
     margin: 2.5px 0;
 }
 
 #sdop-width-slider {
-    background-color: transparent;
+    border-radius: 12px;
     padding: 0;
     margin: 0;
     width: 170px;
@@ -35,6 +36,7 @@
 .sdop-width-label {
     margin: 0 0 0 5px;
     width: 32px;
+    font-family: sans-serif;
     text-align: left;
     color: black;
     font-size: 10pt;
@@ -43,14 +45,27 @@
 .sdop-color-button {
     width: 20px;
     height: 20px;
-    border: 1px solid black;
     margin: 0 2px;
+    border: 0;
+    border-radius: 0;
+    padding: 2px 5px;
+    border: 1px solid black;
+    /* margin: 0 2px; */
+}
+
+.sdop-color-active-button {
+    border: 2px solid #3ba4e5;
 }
 
 .sdop-tools-button {
-    margin: 0 1px;
+    margin: 0 2px;
+    border: 1px solid gray;
+    background-color: lightgray;
+    border-radius: 4px;
+    padding: 2px 5px;
 }
 
 .sdop-tools-active-button  {
     background-color: #3ba4e5;
+    color: white;
 }

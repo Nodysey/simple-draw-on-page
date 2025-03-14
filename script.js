@@ -1,12 +1,17 @@
 var canvas = document.createElement('canvas');
 canvas.id = 'sdop-canvas';
-canvas.width = document.body.clientWidth;
-canvas.height = document.body.clientHeight;
+canvas.width = document.documentElement.scrollWidth;
+canvas.height = document.documentElement.scrollHeight;
 canvas.style.position = 'absolute';
 canvas.style.top = '0';
 canvas.style.left = '0';
 canvas.style.zIndex = '99999999999';
 document.body.appendChild(canvas);
+
+window.addEventListener('resize', () => {
+    canvas.width = document.documentElement.scrollWidth;
+    canvas.height = document.documentElement.scrollHeight;
+});
 
 var color = "#ff0000"
 var width = 5;
@@ -17,16 +22,7 @@ var mouseDown = false;
 var mouseInterval;
 
 var controls = document.createElement('div');
-controls.style.position = 'fixed';
-controls.style.top = '0';
-controls.style.right = '0';
-controls.style.zIndex = '99999999999';
-controls.style.display = 'flex';
-controls.style.flexDirection = 'column';
-controls.style.backgroundColor = 'white';
-controls.style.padding = '5px';
-controls.style.margin = '10px';
-controls.style.border = '1px solid gray';
+controls.id = 'sdop-controls';
 document.body.appendChild(controls);
 
 /* colorPicker = document.createElement('input');
@@ -77,14 +73,16 @@ colors.forEach((itmColor) => {
     button.classList = 'sdop-color-button';
     button.addEventListener('click', () => {
         for (var i = 0; i < colorChangeBtns.length; i++) {
-            colorChangeBtns[i].style.border = '1px solid black';
+            colorChangeBtns[i].classList.remove('sdop-color-active-button');
         }
-        button.style.border = '2px solid #3ba4e5';
+        button.classList.add('sdop-color-active-button');
+        // document.documentElement.style.setProperty('--sdop-current-color', itmColor);
         color = itmColor;
     });
     colorChangeBtns.push(button);
     colorContainer.appendChild(button);
 });
+colorChangeBtns[0].click();
 controls.appendChild(colorContainer);
 controls.appendChild(widthContainer);
 
@@ -92,31 +90,54 @@ var tools = document.createElement('div');
 tools.classList = 'sdop-tools-row';
 controls.appendChild(tools);
 
+var toolsButtons = [];
+
 var drawButton = document.createElement('button');
 drawButton.textContent = 'Draw';
 drawButton.classList = 'sdop-tools-button';
 drawButton.addEventListener('click', () => {
+    canvas.style.pointerEvents = 'auto';
     ctx.globalCompositeOperation = "source-over";
     ctx.strokeStyle = color;
+    for (var i = 0; i < toolsButtons.length; i++) {
+        toolsButtons[i].classList.remove('sdop-tools-active-button');
+    }
     drawButton.classList.add('sdop-tools-active-button');
-    eraserButton.classList.remove('sdop-tools-active-button');
 });
 tools.appendChild(drawButton);
+toolsButtons.push(drawButton);
 
 var eraserButton = document.createElement('button');
 eraserButton.textContent = 'Erase';
 eraserButton.classList = 'sdop-tools-button';
 eraserButton.addEventListener('click', () => {
+    canvas.style.pointerEvents = 'auto';
     ctx.globalCompositeOperation = "destination-out";
     ctx.strokeStyle = "rgba(0,0,0,1)";
+    for (var i = 0; i < toolsButtons.length; i++) {
+        toolsButtons[i].classList.remove('sdop-tools-active-button');
+    }
     eraserButton.classList.add('sdop-tools-active-button');
-    drawButton.classList.remove('sdop-tools-active-button');
 });
 tools.appendChild(eraserButton);
+toolsButtons.push(eraserButton);
+
+var interactButton = document.createElement('button');
+interactButton.textContent = 'Interact';
+interactButton.classList = 'sdop-tools-button';
+interactButton.addEventListener('click', () => {
+    canvas.style.pointerEvents = 'none';
+    for (var i = 0; i < toolsButtons.length; i++) {
+        toolsButtons[i].classList.remove('sdop-tools-active-button');
+    }
+    interactButton.classList.add('sdop-tools-active-button');
+});
+tools.appendChild(interactButton);
+toolsButtons.push(interactButton);
 
 canvas.addEventListener('mousemove', (e) => {
     if (mouseDown) {
-        ctx.lineTo(e.clientX, e.clientY);
+        ctx.lineTo(e.clientX + window.scrollX, e.clientY + window.scrollY);
         ctx.strokeStyle = color;
         ctx.stroke();
     }

@@ -1,0 +1,56 @@
+#sdop-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99999999999;
+}
+
+#sdop-controls {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 99999999999;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 5px;
+    margin: 10px;
+    border: 1px solid gray;
+}
+
+.sdop-tools-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin: 2.5px 0;
+}
+
+#sdop-width-slider {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    width: 170px;
+}
+
+.sdop-width-label {
+    margin: 0 0 0 5px;
+    width: 32px;
+    text-align: left;
+    color: black;
+    font-size: 10pt;
+}
+
+.sdop-color-button {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    margin: 0 2px;
+}
+
+.sdop-tools-button {
+    margin: 0 1px;
+}
+
+.sdop-tools-active-button  {
+    background-color: #3ba4e5;
+}
